@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
-    "gh-pages": "^2.0.0",
     "jsonwebtoken": "^8.3.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
@@ -18,11 +17,11 @@
   },
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "npm run build && aws s3 sync build/ s3://columbus-ui",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "homepage": "https://guangtoutou.github.io/polls"
+  "homepage": "http://columbus-ui.s3-website-ap-southeast-2.amazonaws.com/"
 }
