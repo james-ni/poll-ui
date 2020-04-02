@@ -9,7 +9,7 @@ class Poll extends Component {
   state = {
     choiceId: null,
     disabled: true,
-    loading: false
+    loading: false,
   };
 
   onClick = () => {
@@ -17,7 +17,7 @@ class Poll extends Component {
     api.polls
       .vote({
         choiceId: this.state.choiceId,
-        pollId: this.props.poll._id
+        pollId: this.props.poll._id,
       })
       .then(res => {
         this.setState({ loading: false });
@@ -26,8 +26,8 @@ class Poll extends Component {
       .catch(err =>
         this.setState({
           errors: { message: err.response.data },
-          loading: false
-        })
+          loading: false,
+        }),
       );
   };
 
@@ -37,11 +37,11 @@ class Poll extends Component {
 
   pollForm = poll => (
     <Form>
-      {poll.choices.map((choice, index) => (
+      {poll.options.map((choice, index) => (
         <Form.Field
-          key={choice._id}
+          key={choice.id}
           control={Radio}
-          label={choice.title}
+          label={choice.description}
           checked={this.state.choiceId === choice._id}
           onChange={e => this.onSelect(choice._id)}
         />
@@ -77,7 +77,7 @@ class Poll extends Component {
         key={choice._id}
         style={{
           position: 'relative',
-          padding: '0.2em 0.5em'
+          padding: '0.2em 0.5em',
         }}
       >
         <span
@@ -85,7 +85,7 @@ class Poll extends Component {
             display: 'inline-block',
             position: 'relative',
             zIndex: '99',
-            color: 'rgba(0,0,0,.75)'
+            color: 'rgba(0,0,0,.75)',
           }}
         >
           {percentage}
@@ -96,7 +96,7 @@ class Poll extends Component {
             display: 'inline-block',
             zIndex: '99',
             color: 'rgba(0,0,0,.65)',
-            paddingLeft: '1em'
+            paddingLeft: '1em',
           }}
         >
           {choice.title}
@@ -110,7 +110,7 @@ class Poll extends Component {
             height: '1.6em',
             borderRadius: '0.25em',
             backgroundColor: choice.count === maxCount ? '#77c7f7' : '#e1e8ed',
-            zIndex: '98'
+            zIndex: '98',
           }}
         />
       </Header>
@@ -125,9 +125,9 @@ class Poll extends Component {
         <Header as="h5">
           <Icon name="settings" />
           <Header.Content>
-            {poll.user.username}
+            {/* {poll.user.username} */}
             <Header.Subheader style={{ display: 'inline', marginLeft: '1em' }}>
-              {poll.user.email}
+              {/* {poll.user.email} */}
             </Header.Subheader>
             <Header.Subheader>
               {poll.createdAt && formateDateTime(poll.createdAt)}
@@ -135,7 +135,7 @@ class Poll extends Component {
           </Header.Content>
         </Header>
 
-        <Header as="h2">{poll.question}</Header>
+        <Header as="h2">{poll.title}</Header>
         {poll.voted ? this.pollResult(poll) : this.pollForm(poll)}
       </Segment>
     );

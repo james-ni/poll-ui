@@ -16,14 +16,15 @@ export default class Polls extends Component {
     api.polls
       .getPolls()
       .then(res => {
-        this.setState({ data: res.data.polls });
+        this.setState({ data: res.data });
       })
-      .catch(err =>
-        this.setState({
-          errors: { message: err.response.data },
-          loading: false
-        })
-      );
+      .catch(err => {
+        console.log(err);
+        // this.setState({
+        //   errors: { message: err.response.data },
+        //   loading: false,
+        // });
+      });
   };
 
   render() {

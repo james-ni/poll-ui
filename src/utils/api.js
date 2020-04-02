@@ -13,12 +13,12 @@ export default {
     validateToken: token =>
       axios.post('/validate_token', token).then(res => res.data),
     resetPassword: data =>
-      axios.post('/reset_password', data).then(res => res.data)
+      axios.post('/reset_password', data).then(res => res.data),
   },
 
   polls: {
-    vote: data => axios.post('/polls/vote', data),
+    vote: data => axios.post('/poll/vote', data),
     getPolls: () => axios.get('/polls'),
-    newPoll: data => axios.post('/polls', data)
-  }
+    newPoll: data => axios.post('/poll', data),
+  },
 };

@@ -5,100 +5,95 @@ import {
   Visibility,
   Icon,
   Dropdown,
-  Header
+  Header,
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { useAuth0 } from '../react-auth0-spa';
 
-export default class Navbar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { menuFixed: false, activeItem: 'login' };
-  }
+const guestMenu = loginWithRedirect => {
+  // const { location } = this.props;
 
-  logout = () => {
-    localStorage.removeItem('TOKEN');
-    this.props.onLogout();
-  };
+  return (
+    <Container text>
+      <Menu.Item>
+        <Link to="/">Poll App</Link>
+      </Menu.Item>
+      <Menu.Item
+        color="blue"
+        position="right"
+        onClick={() => loginWithRedirect({})}
+        // active={location.pathname === '/login'}
+      >
+        Login
+      </Menu.Item>
+      <Menu.Item
+        as={Link}
+        color="blue"
+        to="/signup"
+        name="/signup"
+        // active={location.pathname === '/signup'}
+      >
+        Signup
+      </Menu.Item>
+    </Container>
+  );
+};
 
-  guestMenu = () => {
-    const { location } = this.props;
+const userMenu = logout => {
+  // const { location } = this.props;
 
-    return (
-      <Container text>
-        <Menu.Item>
-          <Link to="/">Poll App</Link>
-        </Menu.Item>
-        <Menu.Item
-          as={Link}
-          to="/login"
-          color="blue"
-          position="right"
-          active={location.pathname === '/login'}
-        >
-          Login
-        </Menu.Item>
-        <Menu.Item
-          as={Link}
-          color="blue"
-          to="/signup"
-          name="/signup"
-          active={location.pathname === '/signup'}
-        >
-          Signup
-        </Menu.Item>
-      </Container>
-    );
-  };
+  return (
+    <Container text>
+      <Menu.Item>
+        <Link to="/">Poll App</Link>
+      </Menu.Item>
+      <Menu.Item
+        as={Link}
+        to="/"
+        color="blue"
+        position="right"
+        // active={location.pathname === '/'}
+      >
+        <Icon name="home" />
+      </Menu.Item>
+      <Menu.Item
+        as={Link}
+        color="blue"
+        to="/newpoll"
+        // active={location.pathname === '/newpoll'}
+      >
+        <Icon name="chart bar" />
+      </Menu.Item>
+      {/* <Menu.Item color="blue" active={location.pathname === '/signup'}> */}
+      <Menu.Item color="blue">
+        <Dropdown trigger={<Icon name="user" />}>
+          <Dropdown.Menu>
+            <Dropdown.Item>
+              <Header content="Ningning Ni" subheader="@guangtoutou" />
+            </Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item text="Profile" />
+            <Dropdown.Item text="Logout" onClick={() => logout()} />
+          </Dropdown.Menu>
+        </Dropdown>
+      </Menu.Item>
+    </Container>
+  );
+};
 
-  userMenu = () => {
-    const { location } = this.props;
+const Navbar = props => {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = { menuFixed: false, activeItem: 'login' };
+  // }
+  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
-    return (
-      <Container text>
-        <Menu.Item>
-          <Link to="/">Poll App</Link>
-        </Menu.Item>
-        <Menu.Item
-          as={Link}
-          to="/"
-          color="blue"
-          position="right"
-          active={location.pathname === '/'}
-        >
-          <Icon name="home" />
-        </Menu.Item>
-        <Menu.Item
-          as={Link}
-          color="blue"
-          to="/newpoll"
-          active={location.pathname === '/newpoll'}
-        >
-          <Icon name="chart bar" />
-        </Menu.Item>
-        <Menu.Item color="blue" active={location.pathname === '/signup'}>
-          <Dropdown trigger={<Icon name="user" />}>
-            <Dropdown.Menu>
-              <Dropdown.Item>
-                <Header content="Ningning Ni" subheader="@guangtoutou" />
-              </Dropdown.Item>
-              <Dropdown.Divider />
-              <Dropdown.Item text="Profile" />
-              <Dropdown.Item text="Logout" onClick={this.logout} />
-            </Dropdown.Menu>
-          </Dropdown>
-        </Menu.Item>
-      </Container>
-    );
-  };
-
-  render() {
-    const { menuFixed, activeItem } = this.state;
-    const { authenticated } = this.props;
-
-    return (
-      <Menu pointing secondary fixed="top" style={{ backgroundColor: 'white' }}>
-        {authenticated ? this.userMenu() : this.guestMenu()}
-      </Menu>
-    );
-  }
-}
+  // const { menuFixed, activeItem } = this.state;
+  const a = 111;
+  return (
+    <Menu pointing secondary fixed="top" style={{ backgroundColor: 'white' }}>
+      {isAuthenticated ? userMenu(logout) : guestMenu(loginWithRedirect)}
+    </Menu>
+  );
+};
+export default Navbar;

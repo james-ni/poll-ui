@@ -1,104 +1,89 @@
 import React, { Component, Fragment } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
 
 import GuestRoute from './routes/GuestRoute';
 import UserRoute from './routes/UserRoute';
+import { useAuth0 } from './react-auth0-spa';
 
 import Navbar from './components/Navbar';
 import Home from './components/Home';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import NewPoll from './components/NewPoll';
+// import Login from './components/Login';
+// import Signup from './components/Signup';
+// import NewPoll from './components/NewPoll';
 import setAuthorizationHeader from './utils/setAuthorizationHeader';
+import history from './utils/history';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+function App() {
+  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  // constructor(props) {
+  //   super(props);
 
-    let token = localStorage.getItem('TOKEN');
-    if (token) {
-      setAuthorizationHeader(token);
+  //   let token = localStorage.getItem('TOKEN');
+  //   if (token) {
+  //     setAuthorizationHeader(token);
 
-      const user = jwt.decode(token);
-      this.state = {
-        ...user,
-        authenticated: true
-      };
-    } else {
-      this.state = {
-        authenticated: false,
-        username: '',
-        email: ''
-      };
-    }
-  }
+  //     const user = jwt.decode(token);
+  //     this.state = {
+  //       ...user,
+  //       authenticated: true
+  //     };
+  //   } else {
+  //     this.state = {
+  //       authenticated: false,
+  //       username: '',
+  //       email: ''
+  //     };
+  //   }
+  // }
 
-  componentDidMount() {}
-
-  onLogout = () => {
-    this.setState({ authenticated: false });
+  const onLogout = () => {
     setAuthorizationHeader();
-    this.props.history.push('/login');
+    // this.props.history.push('/login');
   };
 
-  onLogin = token => {
-    this.setState({ authenticated: true });
+  const onLogin = token => {
     localStorage.setItem('TOKEN', token);
     setAuthorizationHeader(token);
     const user = jwt.decode(token);
-    this.setState({
-      email: user.email,
-      username: user.username,
-      authenticated: true
-    });
-    this.props.history.push('/');
+    // this.setState({
+    //   email: user.email,
+    //   username: user.username,
+    //   authenticated: true,
+    // });
+    // this.props.history.push('/');
   };
 
-  render() {
-    const { authenticated } = this.state;
-    return (
-      <Fragment>
-        <Route
-          render={props => (
-            <Navbar
-              {...props}
-              authenticated={authenticated}
-              onLogout={this.onLogout}
-            />
-          )}
-        />
+  return (
+    <Fragment>
+      <Router history={history}>
+        <Navbar />
         <Switch>
-          <UserRoute
-            path="/"
-            exact
-            component={Home}
-            authenticated={authenticated}
-          />
-          <GuestRoute
+          <UserRoute path="/" exact component={Home} />
+          {/* <GuestRoute
             path="/login"
             exact
-            onLogin={this.onLogin}
+            onLogin={onLogin}
             component={Login}
-            authenticated={authenticated}
+            authenticated={isAuthenticated}
           />
           <GuestRoute
             path="/signup"
             exact
-            onSignup={this.onLogin}
+            onSignup={onLogin}
             component={Signup}
-            authenticated={authenticated}
+            authenticated={isAuthenticated}
           />
           <UserRoute
             path="/newpoll"
             exact
             component={NewPoll}
-            authenticated={authenticated}
-          />
+            authenticated={isAuthenticated}
+          /> */}
         </Switch>
-      </Fragment>
-    );
-  }
+      </Router>
+    </Fragment>
+  );
 }
 
 export default App;

@@ -5,15 +5,16 @@
   "dependencies": {
     "axios": "^0.18.0",
     "jsonwebtoken": "^8.3.0",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "react-router-dom": "^4.3.1",
+    "@auth0/auth0-spa-js": "^1.6.4",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-router-dom": "^5.1.2",
     "semantic-ui-css": "^2.3.3",
     "semantic-ui-react": "^0.82.3",
     "validator": "^10.7.1"
   },
   "devDependencies": {
-    "react-scripts": "1.1.5"
+    "react-scripts": "3.4.0"
   },
   "scripts": {
     "predeploy": "npm run build",
@@ -22,6 +23,18 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "homepage": "http://columbus-ui.s3-website-ap-southeast-2.amazonaws.com/"
 }
